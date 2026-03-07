@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>8/3</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+margin:0;
+background:black;
+color:white;
+font-family:'Pacifico',cursive;
+text-align:center;
+overflow:hidden;
+}
+
+/* nút bắt đầu */
+
+#startBtn{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:32px;
+padding:20px 40px;
+border-radius:20px;
+border:none;
+background:pink;
+cursor:pointer;
+}
+
+/* chữ */
+
+#text{
+margin-top:120px;
+font-size:40px;
+}
+
+#text2{
+display:none;
+font-size:42px;
+margin-top:120px;
+opacity:0;
+transition:opacity 2s;
+}
+
+/* con trỏ */
+
+.cursor{
+display:inline-block;
+width:3px;
+background:white;
+margin-left:5px;
+animation:blink 1s infinite;
+}
+
+@keyframes blink{
+0%,50%,100%{opacity:1}
+25%,75%{opacity:0}
+}
+
+/* sao */
+
+.star{
+position:absolute;
+width:2px;
+height:2px;
+background:white;
+animation:twinkle 2s infinite;
+}
+
+@keyframes twinkle{
+0%{opacity:0}
+50%{opacity:1}
+100%{opacity:0}
+}
+
+/* hoa */
+
+.rose{
+font-size:70px;
+margin-top:30px;
+}
+
+/* pháo tim */
+
+.heart{
+position:absolute;
+font-size:22px;
+animation:explode 1s forwards;
+}
+
+@keyframes explode{
+0%{transform:scale(0)}
+100%{transform:scale(3);opacity:0}
+}
+
+/* ảnh */
+
+.photo{
+position:absolute;
+width:7cm;
+height:7cm;
+object-fit:cover;
+border-radius:12px;
+top:110vh;
+animation:fly 6s linear forwards;
+}
+
+@keyframes fly{
+
+0%{
+transform:translateY(0);
+opacity:1;
+}
+
+80%{
+opacity:1;
+}
+
+100%{
+transform:translateY(-130vh);
+opacity:0;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<button id="startBtn">💖 Bấm ở đây nè 💖</button>
+
+<div id="text"></div>
+
+<div id="text2">
+Cảm ơn vì đã là một phần đẹp đẽ trong thanh xuân của Như Ý nhé. Love u 💖
+</div>
+
+<div class="rose">🌹💐🌹</div>
+
+<audio id="music" loop>
+<source src="nhac.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+/* tạo sao */
+
+for(let i=0;i<150;i++){
+let star=document.createElement("div");
+star.className="star";
+star.style.left=Math.random()*100+"vw";
+star.style.top=Math.random()*100+"vh";
+document.body.appendChild(star);
+}
+
+/* chữ gõ */
+
+let message="Nhân ngày 8/3, ngày Quốc Tế Phụ Nữ. Như Ý chúc Thúy Vy có thật nhiều niềm vui, thật nhiều hạnh phúc, có được tất cả trừ vất vả, học hành thi cử đều thuận buồm xuôi gió. Mong tình bạn này sẽ bền tận 1000 kiếp :>>💖";
+let i=0;
+
+function typeText(){
+
+if(i<message.length){
+
+document.getElementById("text").innerHTML=
+message.substring(0,i+1)+"<span class='cursor'></span>";
+
+i++;
+setTimeout(typeText,60);
+
+}else{
+
+setTimeout(startPhotos,5000);
+
+}
+
+}
+
+/* pháo tim */
+
+let hearts=["❤️","💛","💚","💙","💜","💘","💝","💖","💗","💓","💞","💕"," THÚY VY"];
+
+function firework(){
+
+let h=document.createElement("div");
+
+h.className="heart";
+h.innerHTML=hearts[Math.floor(Math.random()*hearts.length)];
+
+h.style.left=Math.random()*100+"vw";
+h.style.top=Math.random()*60+"vh";
+
+document.body.appendChild(h);
+
+setTimeout(()=>h.remove(),1000);
+
+}
+
+setInterval(firework,200);
+
+/* ảnh */
+
+let images=["anh 1.jpg","anh 2.jpg","anh 3.jpg","anh 4.jpg","anh 5.jpg","anh 6.jpg","anh 7.jpg","anh 8.jpg","anh 9.jpg","anh 10.jpg"];
+
+let columnIndex=0;
+
+let columns=5;
+let photoInterval;
+
+function startPhotos(){
+
+document.getElementById("text").style.display="none";
+
+photoInterval=setInterval(createPhoto,400);
+
+setTimeout(function(){
+
+clearInterval(photoInterval);
+
+let t2=document.getElementById("text2");
+
+t2.style.display="block";
+
+setTimeout(()=>{
+t2.style.opacity="1";
+},50);
+
+},15000);
+
+}
+
+function createPhoto(){
+
+let img=document.createElement("img");
+
+img.src=images[Math.floor(Math.random()*images.length)];
+
+img.className="photo";
+
+let columnWidth=window.innerWidth/columns;
+
+let x=columnIndex*columnWidth+columnWidth/2-140;
+
+img.style.left=x+"px";
+
+document.body.appendChild(img);
+
+columnIndex++;
+
+if(columnIndex>=columns){
+columnIndex=0;
+}
+
+setTimeout(()=>{
+img.remove();
+},6000);
+
+}
+
+/* nút bắt đầu */
+
+document.getElementById("startBtn").onclick=function(){
+
+document.getElementById("music").play();
+
+document.getElementById("startBtn").style.display="none";
+
+typeText();
+
+}
+
+</script>
+
+</body>
+</html>
